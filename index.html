@@ -146,6 +146,17 @@ section.scroll-section{justify-content:flex-start;padding-top:calc(var(--nav-h) 
 .qr-card p{color:var(--text-dim);font-size:.8rem}
 .join-text{margin-top:32px;color:var(--text-dim);font-size:1.05rem;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.8}
 
+/* ========== Friend Links ========== */
+.friend-links{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:24px;padding:32px 40px;background:rgba(6,6,18,.7);border-top:1px solid var(--card-border);backdrop-filter:blur(12px);font-size:1.05rem;letter-spacing:1px}
+.friend-links .fl-label{color:var(--text-dim);font-weight:600}
+.friend-links .fl-divider{color:rgba(255,255,255,.18);font-weight:300;user-select:none}
+.friend-links a{color:var(--text);font-weight:500;transition:color .3s,text-shadow .3s}
+.friend-links a:hover{color:var(--cyan);text-shadow:0 0 12px var(--cyan-glow)}
+@media(max-width:600px){
+  .friend-links{flex-direction:column;gap:14px;padding:28px 20px;font-size:.95rem}
+  .friend-links .fl-divider{display:none}
+}
+
 /* ========== Footer ========== */
 footer{position:relative;z-index:1;text-align:center;padding:40px;border-top:1px solid var(--card-border);color:var(--text-dim);font-size:.85rem}
 footer .heart{color:var(--purple)}
@@ -359,6 +370,15 @@ footer .heart{color:var(--purple)}
     <p style="margin-top:12px"><span class="highlight">超越科学，创造无限可能 🚀</span></p>
   </div>
 </section>
+
+<!-- Friend Links -->
+<div class="friend-links">
+  <span class="fl-label">友情链接</span>
+  <span class="fl-divider">|</span>
+  <a href="https://xiangming.hpe.cn/" target="_blank" rel="noopener noreferrer">向明中学门户网站</a>
+  <span class="fl-divider">|</span>
+  <a href="https://mengqiu07.github.io/XMProgramming/" target="_blank" rel="noopener noreferrer">向明中学计算机社</a>
+</div>
 
 <!-- Footer -->
 <footer>
