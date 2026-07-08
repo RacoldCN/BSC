@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>！？我超科学社？！</title>
+<style>
+/* ========== Reset & Variables ========== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#06060f;
+  --bg2:#0c0c1d;
+  --cyan:#00e5ff;
+  --cyan-dim:rgba(0,229,255,.15);
+  --cyan-glow:rgba(0,229,255,.4);
+  --purple:#8b5cf6;
+  --purple-dim:rgba(139,92,246,.15);
+  --purple-glow:rgba(139,92,246,.4);
+  --text:#e0e0f0;
+  --text-dim:#9090b0;
+  --card-bg:rgba(12,12,32,.7);
+  --card-border:rgba(255,255,255,.06);
+  --radius:16px;
+  --nav-h:70px;
+}
+html{scroll-behavior:auto;scrollbar-width:thin;scrollbar-color:#00e5ff33 transparent;overflow-y:scroll}
+body{font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;overflow-y:scroll;height:100vh}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-thumb{background:var(--cyan-dim);border-radius:3px}
+a{color:var(--cyan);text-decoration:none}
+
+/* ========== Particle Canvas ========== */
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* ========== Navigation ========== */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 40px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(6,6,15,.7);border-bottom:1px solid var(--card-border);transition:all .3s}
+nav .logo{font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px}
+nav .nav-links{display:flex;gap:28px;list-style:none}
+nav .nav-links a{color:var(--text-dim);font-size:.9rem;transition:color .3s;position:relative}
+nav .nav-links a:hover,nav .nav-links a.active{color:var(--cyan)}
+nav .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--cyan);transition:width .3s}
+nav .nav-links a:hover::after,nav .nav-links a.active::after{width:100%}
+.menu-btn{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}
+.menu-btn span{width:26px;height:2px;background:var(--text);transition:.3s;border-radius:1px}
+
+/* ========== Sections Common ========== */
+section{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--nav-h) + 40px) 40px 80px;max-width:1300px;margin:0 auto;overflow-y:auto}
+section.hero{padding-top:0;justify-content:center}
+section.scroll-section{justify-content:flex-start;padding-top:calc(var(--nav-h) + 30px)}
+.section-tag{display:inline-block;font-size:.75rem;letter-spacing:4px;color:var(--cyan);margin-bottom:12px;text-transform:uppercase}
+.section-title{font-size:2.5rem;font-weight:900;margin-bottom:16px;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-desc{color:var(--text-dim);max-width:700px;font-size:1.05rem;margin-bottom:48px}
+
+/* ========== Hero ========== */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding-top:var(--nav-h);position:relative;z-index:1}
+.hero-content{max-width:800px}
+.hero .badge{display:inline-block;padding:8px 20px;border:1px solid var(--cyan);border-radius:50px;font-size:.8rem;color:var(--cyan);letter-spacing:3px;margin-bottom:24px;animation:pulse-badge 2s infinite}
+@keyframes pulse-badge{0%,100%{box-shadow:0 0 0 0 var(--cyan-glow)}50%{box-shadow:0 0 20px 4px var(--cyan-glow)}}
+.hero h1{font-size:clamp(2.8rem,7vw,5rem);font-weight:900;line-height:1.15;margin-bottom:12px;letter-spacing:2px}
+.hero h1 .cyan{color:var(--cyan);text-shadow:0 0 40px var(--cyan-glow)}
+.hero h1 .purple{color:var(--purple);text-shadow:0 0 40px var(--purple-glow)}
+.hero .subtitle{font-size:1.2rem;color:var(--text-dim);margin-bottom:36px;max-width:550px;margin-left:auto;margin-right:auto}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .35s;border:none;letter-spacing:1px}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;box-shadow:0 4px 24px rgba(0,229,255,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(0,229,255,.5)}
+.btn-outline{background:transparent;border:2px solid var(--cyan);color:var(--cyan)}
+.btn-outline:hover{background:var(--cyan-dim);box-shadow:0 0 24px var(--cyan-dim)}
+/* ========== Floating Scroll Arrows ========== */
+.float-arrow{position:fixed;left:50%;transform:translateX(-50%);z-index:999;cursor:pointer;padding:8px;transition:opacity .4s;opacity:1;pointer-events:auto}
+.float-arrow.hidden{opacity:0;pointer-events:none}
+.float-arrow span{display:block;width:30px;height:30px;border-right:2px solid var(--cyan);border-bottom:2px solid var(--cyan);opacity:.5;transition:opacity .3s}
+.float-arrow:hover span{opacity:1}
+#floatArrowDown{bottom:28px;animation:bounceDown 2s infinite}
+#floatArrowDown span{transform:rotate(45deg)}
+@keyframes bounceDown{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+
+/* ========== About ========== */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.about-text p{color:var(--text-dim);margin-bottom:16px;font-size:1.05rem}
+.about-text .highlight{color:var(--cyan);font-weight:700}
+.about-visual{position:relative;height:320px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--card-border)}
+.about-visual .glow-box{position:absolute;inset:20px;border-radius:var(--radius);border:2px solid var(--cyan-dim);display:flex;align-items:center;justify-content:center;background:var(--card-bg);backdrop-filter:blur(10px);overflow:hidden}
+.about-visual .glow-box::before{content:'';position:absolute;width:200px;height:200px;background:radial-gradient(circle,var(--cyan-dim),transparent);border-radius:50%;animation:orbit 8s linear infinite}
+@keyframes orbit{0%{transform:translate(-60px,-60px)}25%{transform:translate(60px,-60px)}50%{transform:translate(60px,60px)}75%{transform:translate(-60px,60px)}100%{transform:translate(-60px,-60px)}}
+.about-visual .inner-text{position:relative;z-index:1;text-align:center}
+.about-visual .big-num{font-size:4rem;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.about-visual .label{color:var(--text-dim);font-size:.9rem;margin-top:4px}
+
+/* ========== Highlights Cards ========== */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);padding:32px 28px;transition:all .4s;position:relative;overflow:hidden;backdrop-filter:blur(8px)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .4s}
+.card:hover{transform:translateY(-6px);border-color:var(--cyan-dim);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.card:hover::before{opacity:1}
+.card .card-icon{font-size:2rem;margin-bottom:16px;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--cyan-dim)}
+.card h3{font-size:1.15rem;margin-bottom:10px;color:#fff}
+.card p{color:var(--text-dim);font-size:.92rem;line-height:1.7}
+
+/* ========== Facilities ========== */
+.facility-list{display:flex;flex-direction:column;gap:20px}
+.facility-item{display:flex;align-items:flex-start;gap:16px;padding:24px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);transition:.3s}
+.facility-item:hover{border-color:var(--purple-dim)}
+.facility-item .icon{flex-shrink:0;font-size:1.5rem;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--purple-dim)}
+.facility-item .facility-text{flex:1}
+.facility-item h4{font-size:1rem;color:#fff;margin-bottom:4px}
+.facility-item p{font-size:.88rem;color:var(--text-dim)}
+.facility-thumb{width:160px;height:110px;object-fit:cover;border-radius:10px;cursor:pointer;flex-shrink:0;border:1px solid var(--card-border);transition:transform .3s, border-color .3s}
+.facility-thumb:hover{transform:scale(1.05);border-color:var(--cyan-dim)}
+
+/* ========== Photo Gallery ========== */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.gallery-item{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3;cursor:pointer;border:1px solid var(--card-border);transition:all .4s;background:var(--bg2)}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.gallery-item:hover{transform:translateY(-4px);border-color:var(--cyan-dim);box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.gallery-item:hover img{transform:scale(1.08)}
+.gallery-item .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:16px}
+.gallery-item:hover .overlay{opacity:1}
+.gallery-item .overlay span{color:#fff;font-size:.85rem;font-weight:600}
+
+/* ========== Lightbox ========== */
+.lightbox{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .3s;cursor:pointer}
+.lightbox.active{opacity:1;visibility:visible}
+.lightbox img{max-width:90vw;max-height:85vh;border-radius:8px;object-fit:contain;transform:scale(.9);transition:transform .3s}
+.lightbox.active img{transform:scale(1)}
+.lightbox-close{position:absolute;top:24px;right:32px;font-size:2rem;color:#fff;cursor:pointer;z-index:1}
+.lightbox-prev,.lightbox-next{position:absolute;top:50%;transform:translateY(-50%);font-size:2.5rem;color:#fff;cursor:pointer;padding:12px;z-index:1;user-select:none;opacity:.6;transition:opacity .3s}
+.lightbox-prev:hover,.lightbox-next:hover{opacity:1}
+.lightbox-prev{left:20px}
+.lightbox-next{right:20px}
+
+/* ========== Awards ========== */
+.awards-scroll{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;padding:10px 0 20px}
+.award-card{border-radius:var(--radius);overflow:hidden;border:1px solid var(--card-border);background:var(--card-bg);transition:.3s;cursor:pointer}
+.award-card:hover{border-color:var(--purple-dim);box-shadow:0 4px 20px var(--purple-dim)}
+.award-card img{width:100%;aspect-ratio:3/4;object-fit:cover}
+.award-card .award-label{padding:12px 16px;font-size:.8rem;color:var(--text-dim);text-align:center}
+
+/* ========== Join Section ========== */
+.join-section{text-align:center}
+.qr-container{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;margin-top:40px}
+.qr-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);padding:32px;transition:all .4s;width:240px;backdrop-filter:blur(8px)}
+.qr-card:hover{transform:translateY(-6px);border-color:var(--cyan-dim);box-shadow:0 12px 40px rgba(0,229,255,.15)}
+.qr-card img{width:100%;max-height:300px;object-fit:contain;border-radius:12px;margin-bottom:16px;border:2px solid var(--card-border)}
+.qr-card h4{color:#fff;font-size:1rem;margin-bottom:4px}
+.qr-card p{color:var(--text-dim);font-size:.8rem}
+.join-text{margin-top:32px;color:var(--text-dim);font-size:1.05rem;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.8}
+
+/* ========== Footer ========== */
+footer{position:relative;z-index:1;text-align:center;padding:40px;border-top:1px solid var(--card-border);color:var(--text-dim);font-size:.85rem}
+footer .heart{color:var(--purple)}
+
+/* ========== Animations ========== */
+.fade-up{opacity:0;transform:translateY(40px);transition:all .7s cubic-bezier(.25,.46,.45,.94)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+
+/* ========== Responsive ========== */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  nav .nav-links{position:fixed;top:0;right:-100%;width:260px;height:100vh;flex-direction:column;background:rgba(10,10,30,.97);backdrop-filter:blur(30px);padding:100px 32px;gap:32px;transition:right .4s;border-left:1px solid var(--card-border)}
+  nav .nav-links.open{right:0}
+  .menu-btn{display:flex}
+  section{padding:calc(var(--nav-h) + 24px) 20px 60px;min-height:100vh}
+  .section-title{font-size:1.8rem}
+  .about-grid{grid-template-columns:1fr}
+  .about-visual{height:200px}
+  .qr-container{gap:24px}
+  .hero h1{font-size:2rem;letter-spacing:0;white-space:nowrap}
+  .hero .subtitle{font-size:1rem;max-width:320px}
+  .hero .badge{font-size:.7rem;letter-spacing:1px;padding:6px 14px}
+  .gallery{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .cards{grid-template-columns:1fr}
+  .facility-list{grid-template-columns:1fr}
+  .facility-item{flex-wrap:wrap}
+  .facility-item .icon{width:36px;height:36px;font-size:1.2rem}
+  .facility-thumb{width:100%;height:180px;margin-top:8px;order:1}
+  nav .logo{font-size:1.1rem;letter-spacing:1px}
+}
+
+@media(max-width:400px){
+  .hero h1{font-size:1.6rem}
+  .hero .subtitle{font-size:.9rem}
+  .section-title{font-size:1.5rem}
+  .facility-item{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- Particle Canvas -->
+<canvas id="particles"></canvas>
+
+<!-- Navigation -->
+<nav>
+  <div class="logo">向明中学超科学社</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about" onclick="closeMenu()">关于我们</a></li>
+    <li><a href="#highlights" onclick="closeMenu()">社团亮点</a></li>
+    <li><a href="#competition" onclick="closeMenu()">比赛风采</a></li>
+    <li><a href="#awards" onclick="closeMenu()">荣誉墙</a></li>
+    <li><a href="#group-photos" onclick="closeMenu()">社团合照</a></li>
+    <li><a href="#join" onclick="closeMenu()">加入我们</a></li>
+  </ul>
+  <div class="menu-btn" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="badge">◆ 2026 招新进行中 ◆</div>
+    <h1>
+      <span class="cyan">！？</span>我超科学社<span class="purple">？！</span>
+    </h1>
+    <p class="subtitle">超越科学的创造实践 · 向明中学十余年王牌智能小车社团<br>零基础也能来！</p>
+    <div class="hero-btns">
+      <a href="#join" class="btn btn-primary">🚀 加入我们</a>
+      <a href="#about" class="btn btn-outline">了解更多</a>
+    </div>
+  </div>
+</section>
+
+<!-- Floating Arrow -->
+<div id="floatArrowDown" class="float-arrow" title="下一个板块"><span></span></div>
+
+<!-- About -->
+<section id="about">
+  <div class="section-tag">// ABOUT</div>
+  <h2 class="section-title">关于超科学社</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p><span class="highlight">超科学社</span>是向明中学一枚拥有<span class="highlight">十余年历史</span>的老牌智能小车比赛社团。</p>
+      <p>我们以智能小车为核心，从<span class="highlight">C 语言编程</span>到智能小车控制，从团队协作到赛场竞技，一步步带你走进智能科技的奇妙世界。</p>
+      <p><span class="highlight">新手零门槛</span>——不管你有没有基础，只要你有热情、肯动手，我们就能带你从零开始，<span class="highlight">拿奖拿到手软</span>！</p>
+    </div>
+    <div class="about-visual">
+      <div class="glow-box">
+        <div class="inner-text">
+          <div class="big-num">10+</div>
+          <div class="label">年社团历史</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Highlights -->
+<section id="highlights" class="scroll-section">
+  <div class="section-tag">// HIGHLIGHTS</div>
+  <h2 class="section-title">为什么选择超科学社</h2>
+  <p class="section-desc">这里不只是一个社团，更是一个能让你发光发热的平台。</p>
+  <div class="cards">
+    <div class="card fade-up">
+      <div class="card-icon">💻</div>
+      <h3>零基础编程教学</h3>
+      <p>外聘专业老师手把手教授 C 语言编程课程，哪怕你从未接触过代码，也能轻松跟上、快速上手，打下扎实的编程基础。</p>
+    </div>
+    <div class="card fade-up">
+      <div class="card-icon">🏆</div>
+      <h3>多届上海市冠军</h3>
+      <p>比赛资源丰富、含金量极高，包括 RoboCup 青少年世界杯等顶级赛事。我们是多届上海市冠军，实力有目共睹！</p>
+    </div>
+    <div class="card fade-up">
+      <div class="card-icon">⚖️</div>
+      <h3>公平参赛机会</h3>
+      <p>只要你能参赛、愿意参赛，在我们社团绝对不会被埋没。每位社员都有平等的机会站上赛场、证明自己。</p>
+    </div>
+    <div class="card fade-up">
+      <div class="card-icon">🤝</div>
+      <h3>手把手传承</h3>
+      <p>带队老师经验丰富，学长学姐同仁倾囊相授，手把手带你走完从入门到精通的全过程，不怕学不会！</p>
+    </div>
+    <div class="card fade-up">
+      <div class="card-icon">🎉</div>
+      <h3>超棒社团氛围</h3>
+      <p>社长会给大家刷小零食吃、学期末还有小茶歇～老师办公室更有惊喜等你探索！在这里你能收获的不只是技术，还有友谊和快乐。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Facilities -->
+<section id="facilities">
+  <div class="section-tag">// FACILITIES</div>
+  <h2 class="section-title">三大活动空间</h2>
+  <p class="section-desc">从机房到专业实验室，比赛所需设施一应俱全。</p>
+  <div class="facility-list">
+    <div class="facility-item fade-up">
+      <div class="icon">🖥️</div>
+      <div class="facility-text">
+        <h4>逸夫楼 1F 电脑机房</h4>
+        <p>设备齐全的编程教室，日常上课和代码调试的主要阵地。</p>
+      </div>
+      <img src="materials/场地照片/逸夫楼 1F 电脑机房.jpg" class="facility-thumb" alt="逸夫楼 1F 电脑机房" loading="lazy" onclick="event.stopPropagation();openLightbox('materials/场地照片/',['逸夫楼 1F 电脑机房.jpg'],0,'逸夫楼 1F 电脑机房')">
+    </div>
+    <div class="facility-item fade-up">
+      <div class="icon">☀️</div>
+      <div class="facility-text">
+        <h4>逸夫楼 2F 玻璃阳光房</h4>
+        <p>宽敞明亮的学生活动中心，社团活动和团队讨论的绝佳空间。</p>
+      </div>
+    </div>
+    <div class="facility-item fade-up">
+      <div class="icon">🔬</div>
+      <div class="facility-text">
+        <h4>东部 B1 智驾实验室</h4>
+        <p>独立的社团专属实验室，智能小车调试、赛道训练、比赛备战的核心基地。</p>
+      </div>
+      <img src="materials/场地照片/东部 B1 智驾实验室.jpg" class="facility-thumb" alt="东部 B1 智驾实验室" loading="lazy" onclick="event.stopPropagation();openLightbox('materials/场地照片/',['东部 B1 智驾实验室.jpg'],0,'东部 B1 智驾实验室')">
+    </div>
+  </div>
+</section>
+
+<!-- Competition Photos -->
+<section id="competition" class="scroll-section">
+  <div class="section-tag">// COMPETITION</div>
+  <h2 class="section-title">比赛风采</h2>
+  <p class="section-desc">赛场上的每一个瞬间，都是我们拼搏的见证。</p>
+  <div class="gallery" id="compGallery"></div>
+</section>
+
+<!-- Awards -->
+<section id="awards" class="scroll-section">
+  <div class="section-tag">// HONORS</div>
+  <h2 class="section-title">荣誉墙</h2>
+  <p class="section-desc">每一张奖状背后，都是无数个日夜的努力与坚持。</p>
+  <div class="awards-scroll" id="awardsContainer"></div>
+</section>
+
+<!-- Group Photos -->
+<section id="group-photos" class="scroll-section">
+  <div class="section-tag">// FAMILY</div>
+  <h2 class="section-title">社团合照</h2>
+  <p class="section-desc">我们不只是队友，更是一家人。</p>
+  <div class="gallery" id="groupGallery"></div>
+</section>
+
+<!-- Join Us -->
+<section id="join" class="join-section">
+  <div class="section-tag">// JOIN US</div>
+  <h2 class="section-title">加入我们</h2>
+  <p class="section-desc">新手无门槛！欢迎新高一、高二同学加入超科学社大家庭！</p>
+  <div class="qr-container">
+    <div class="qr-card fade-up">
+      <img src="materials/（副）社长微信/微信图片_20260708125429_955_33.jpg" alt="社长微信" loading="lazy">
+      <h4>社长微信</h4>
+      <p>扫码添加 · 欢迎咨询</p>
+    </div>
+    <div class="qr-card fade-up">
+      <img src="materials/（副）社长微信/微信图片_20260708125945_967_33.jpg" alt="副社长微信" loading="lazy">
+      <h4>副社长微信</h4>
+      <p>扫码添加 · 欢迎咨询</p>
+    </div>
+  </div>
+  <div class="join-text fade-up">
+    <p>📢 <strong>2026 年暑假招新正式启动！</strong></p>
+    <p>面向新高一、高二全体同学，不管你有没有基础，<br>只要你热爱科技、想动手创造，超科学社就欢迎你！</p>
+    <p>快扫上方二维码，加入我们的微信群了解更多～</p>
+    <p style="margin-top:12px"><span class="highlight">超越科学，创造无限可能 🚀</span></p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>© 2026 向明中学超科学社 &nbsp;|&nbsp; Made with <span class="heart">⚡</span> by 超科学社团队</p>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">&times;</span>
+  <span class="lightbox-prev" onclick="event.stopPropagation();navigateLightbox(-1)">‹</span>
+  <span class="lightbox-next" onclick="event.stopPropagation();navigateLightbox(1)">›</span>
+  <img src="" alt="" id="lightboxImg">
+</div>
+
+<script>
+// ========== Particle Background ==========
+(function(){
+  const canvas=document.getElementById('particles');
+  const ctx=canvas.getContext('2d');
+  let w,h,particles=[];
+  function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+  const count=80;
+  for(let i=0;i<count;i++){
+    particles.push({
+      x:Math.random()*w,y:Math.random()*h,
+      vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6,
+      r:Math.random()*1.8+.5,alpha:Math.random()*.5+.3
+    });
+  }
+  function animate(){
+    ctx.clearRect(0,0,w,h);
+    // lines between close particles
+    for(let i=0;i<particles.length;i++){
+      const p=particles[i];
+      for(let j=i+1;j<particles.length;j++){
+        const q=particles[j];
+        const dx=p.x-q.x,dy=p.y-q.y,dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<130){
+          ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle=`rgba(0,229,255,${.06*(1-dist/130)})`;
+          ctx.lineWidth=.5;ctx.stroke();
+        }
+      }
+    }
+    // draw & update particles
+    particles.forEach(p=>{
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,229,255,${p.alpha})`;ctx.fill();
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>w)p.vx*=-1;
+      if(p.y<0||p.y>h)p.vy*=-1;
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ========== Mobile Menu ==========
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')}
+function closeMenu(){document.getElementById('navLinks').classList.remove('open')}
+document.querySelectorAll('nav .nav-links a').forEach(a=>a.addEventListener('click',closeMenu));
+
+// ========== Floating Arrow & Keyboard Navigation ==========
+const allSections=document.querySelectorAll('section[id]');
+const arrowDown=document.getElementById('floatArrowDown');
+
+function getCurrentSectionIndex(){
+  let bestIdx=0,bestDist=1/0;
+  for(let i=0;i<allSections.length;i++){
+    const dist=Math.abs(allSections[i].getBoundingClientRect().top);
+    if(dist<bestDist){bestDist=dist;bestIdx=i;}
+  }
+  return bestIdx;
+}
+
+function updateFloatArrow(){
+  const atBottom=window.innerHeight+window.scrollY>=document.body.scrollHeight-5;
+  arrowDown.classList.toggle('hidden',atBottom);
+}
+
+function goToNextSection(){
+  const idx=getCurrentSectionIndex();
+  if(idx<allSections.length-1)allSections[idx+1].scrollIntoView({behavior:'smooth'});
+}
+
+arrowDown.addEventListener('click',goToNextSection);
+
+// Keyboard: ArrowDown to go next
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'){e.preventDefault();goToNextSection();}
+});
+
+updateFloatArrow();
+window.addEventListener('scroll',updateFloatArrow,{passive:true});
+
+// ========== Active Nav Link ==========
+window.addEventListener('scroll',()=>{
+  let scrollY=window.scrollY+120;
+  allSections.forEach(sec=>{
+    const top=sec.offsetTop,height=sec.offsetHeight,id=sec.getAttribute('id');
+    if(scrollY>=top&&scrollY<top+height){
+      document.querySelectorAll('nav .nav-links a').forEach(a=>{a.classList.remove('active');if(a.getAttribute('href')===`#${id}`)a.classList.add('active')});
+    }
+  });
+},{passive:true});
+
+// Nav link click
+document.querySelectorAll('nav .nav-links a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',function(e){
+    e.preventDefault();
+    const target=document.querySelector(this.getAttribute('href'));
+    if(target)target.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// ========== Scroll Animations ==========
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:.15});
+document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+
+// ========== Image Data ==========
+const compImages=[
+  '微信图片_20260708125413_938_33.jpg','微信图片_20260708125414_939_33.jpg',
+  '微信图片_20260708125415_940_33.jpg','微信图片_20260708125417_942_33.jpg',
+  '微信图片_20260708125418_944_33.jpg','微信图片_20260708125422_948_33.jpg',
+  '微信图片_20260708125425_950_33.jpg','微信图片_20260708125426_951_33.jpg',
+  '微信图片_20260708125433_959_33.jpg','微信图片_20260708125438_964_33.jpg'
+];
+const groupImages=[
+  '微信图片_20260708125416_941_33.jpg','微信图片_20260708125420_946_33.jpg',
+  '微信图片_20260708125421_947_33.jpg','微信图片_20260708125427_952_33.jpg',
+  '微信图片_20260708125428_953_33.jpg','微信图片_20260708125440_966_33.jpg'
+];
+const awardImages=[
+  '微信图片_20260708125417_943_33.jpg','微信图片_20260708125423_949_33.jpg',
+  '微信图片_20260708125429_954_33.jpg','微信图片_20260708125431_957_33.jpg',
+  '微信图片_20260708125432_958_33.jpg','微信图片_20260708125436_962_33.jpg',
+  '微信图片_20260708125437_963_33.jpg'
+];
+
+
+// ========== Build Galleries ==========
+function buildGallery(containerId,images,basePath,labels){
+  const container=document.getElementById(containerId);
+  images.forEach((img,i)=>{
+    const div=document.createElement('div');
+    div.className='gallery-item';
+    div.innerHTML=`
+      <img src="${basePath}${img}" alt="${labels||'照片'}" loading="lazy">
+      <div class="overlay"><span>${labels} #${i+1}</span></div>
+    `;
+    div.addEventListener('click',()=>openLightbox(basePath,images,i,labels));
+    container.appendChild(div);
+  });
+}
+buildGallery('compGallery',compImages,'materials/比赛照片/','比赛风采');
+buildGallery('groupGallery',groupImages,'materials/合照/','社团合照');
+
+// ========== Build Awards ==========
+const awardsContainer=document.getElementById('awardsContainer');
+awardImages.forEach((img,i)=>{
+  const div=document.createElement('div');
+  div.className='award-card';
+  div.innerHTML=`<img src="materials/奖状/${img}" alt="奖状" loading="lazy"><div class="award-label">荣誉证书 #${i+1}</div>`;
+  div.addEventListener('click',()=>openLightbox('materials/奖状/',awardImages,i,'荣誉证书'));
+  awardsContainer.appendChild(div);
+});
+
+// ========== Lightbox ==========
+let lightboxData={basePath:'',images:[],index:0,label:''};
+function openLightbox(basePath,images,index,label){
+  lightboxData={basePath,images,index,label};
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow='';
+}
+function updateLightbox(){
+  const d=lightboxData;
+  document.getElementById('lightboxImg').src=`${d.basePath}${d.images[d.index]}`;
+  document.getElementById('lightboxImg').alt=`${d.label} #${d.index+1}`;
+}
+function navigateLightbox(dir){
+  const d=lightboxData;
+  d.index=(d.index+dir+d.images.length)%d.images.length;
+  updateLightbox();
+}
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lightbox').classList.contains('active'))return;
+  if(e.key==='Escape')closeLightbox();
+  if(e.key==='ArrowLeft')navigateLightbox(-1);
+  if(e.key==='ArrowRight')navigateLightbox(1);
+});
+
+// ========== Close menu on outside click ==========
+document.addEventListener('click',e=>{
+  const nav=document.getElementById('navLinks');
+  if(nav.classList.contains('open')&&!e.target.closest('nav'))closeMenu();
+});
+</script>
+</body>
+</html>
