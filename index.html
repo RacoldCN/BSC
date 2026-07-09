@@ -136,6 +136,21 @@ section.scroll-section{justify-content:flex-start;padding-top:calc(var(--nav-h) 
 .award-card img{width:100%;aspect-ratio:3/4;object-fit:cover}
 .award-card .award-label{padding:12px 16px;font-size:.8rem;color:var(--text-dim);text-align:center}
 
+/* ========== News / 喜报 ========== */
+.news-cards{display:flex;flex-direction:column;gap:24px}
+.news-card{display:flex;flex-direction:column;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);padding:32px;transition:all .4s;position:relative;overflow:hidden;backdrop-filter:blur(8px)}
+.news-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);opacity:.5;transition:opacity .4s}
+.news-card:hover{border-color:var(--cyan-dim);box-shadow:0 12px 40px rgba(0,0,0,.4);transform:translateY(-4px)}
+.news-card:hover::before{opacity:1}
+.news-card .news-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border:1px solid var(--cyan-dim);border-radius:50px;font-size:.75rem;color:var(--cyan);letter-spacing:2px;margin-bottom:16px;width:fit-content}
+.news-card h3{font-size:1.2rem;color:#fff;margin-bottom:10px;line-height:1.5}
+.news-card .news-source{font-size:.8rem;color:var(--text-dim);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.news-card .news-source .dot{width:4px;height:4px;border-radius:50%;background:var(--purple)}
+.news-card .news-summary{color:var(--text-dim);font-size:.92rem;line-height:1.8;margin-bottom:20px}
+.news-card .news-link{display:inline-flex;align-items:center;gap:6px;color:var(--cyan);font-size:.9rem;font-weight:600;transition:all .3s;border-bottom:1px solid transparent;width:fit-content}
+.news-card .news-link:hover{border-bottom-color:var(--cyan);text-shadow:0 0 12px var(--cyan-glow)}
+.news-card .news-link .arrow{transition:transform .3s}
+.news-card .news-link:hover .arrow{transform:translateX(4px)}
 /* ========== Join Section ========== */
 .join-section{text-align:center}
 .qr-container{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;margin-top:40px}
@@ -209,6 +224,7 @@ footer .heart{color:var(--purple)}
     <li><a href="#highlights" onclick="closeMenu()">社团亮点</a></li>
     <li><a href="#competition" onclick="closeMenu()">比赛风采</a></li>
     <li><a href="#awards" onclick="closeMenu()">荣誉墙</a></li>
+    <li><a href="#news" onclick="closeMenu()">喜报</a></li>
     <li><a href="#group-photos" onclick="closeMenu()">社团合照</a></li>
     <li><a href="#join" onclick="closeMenu()">加入我们</a></li>
   </ul>
@@ -336,6 +352,36 @@ footer .heart{color:var(--purple)}
   <h2 class="section-title">荣誉墙</h2>
   <p class="section-desc">每一张奖状背后，都是无数个日夜的努力与坚持。</p>
   <div class="awards-scroll" id="awardsContainer"></div>
+</section>
+
+<!-- News / 喜报 -->
+<section id="news" class="scroll-section">
+  <div class="section-tag">// NEWS</div>
+  <h2 class="section-title">喜报</h2>
+  <p class="section-desc">学校公众号发布的获奖喜报，记录超科学社的荣耀时刻。</p>
+  <div class="news-cards">
+    <div class="news-card fade-up">
+      <div class="news-badge">📢 喜报</div>
+      <h3>我校学生在第六届长三角青少年人工智能奥林匹克挑战赛中斩获佳绩</h3>
+      <div class="news-source"><span class="dot"></span>上海市向明中学</div>
+      <p class="news-summary">比赛主题"让世界充满AI"，聚焦生成式AI、具身智能、智能驾驶等前沿技术。向明学子在 AI智行方程式、无人驾驶虚拟赛、智能巡检挑战赛等项目中斩获多项一、二、三等奖，展现了扎实的AI素养与创新能力。</p>
+      <a href="https://mp.weixin.qq.com/s/LbREEXoMeOw69105w_CMAQ" target="_blank" rel="noopener noreferrer" class="news-link">查看原文 <span class="arrow">→</span></a>
+    </div>
+    <div class="news-card fade-up">
+      <div class="news-badge">📢 喜报</div>
+      <h3>向明学子在"2026年ROBOCUP青少年世界杯中国赛上海地区选拔赛"中斩获冠军、季军</h3>
+      <div class="news-source"><span class="dot"></span>向明中学信息组</div>
+      <p class="news-summary">在机器人足球赛-轻量组中，队员攻克硬件设计、电子机械工程及编程控制等难题，技术文档获评委高度认可；微型迷宫救援项目中，向明一队以两题满分的稳定发挥斩获冠军，展现了卓越的技术实力和团队协作精神。</p>
+      <a href="https://mp.weixin.qq.com/s/D_ij_zPy7McJJTEEUr4lyg" target="_blank" rel="noopener noreferrer" class="news-link">查看原文 <span class="arrow">→</span></a>
+    </div>
+    <div class="news-card fade-up">
+      <div class="news-badge">📢 喜报</div>
+      <h3>我校学生在2025年上海市青少年机器人知识与实践比赛中获佳绩</h3>
+      <div class="news-source"><span class="dot"></span>向明中学信息组</div>
+      <p class="news-summary">在"视觉竞速"任务中，向明学子获得1项一等奖和1项二等奖。面对赛场光线干扰、调试时间临时压缩等挑战，团队冷静应对、临时调整参数，以"五圈1分32秒且操作满分"的成绩冲线，展现了出色的临场应变与团队协作能力。</p>
+      <a href="https://mp.weixin.qq.com/s/92h7tLJGGfNSA1K9IhnHpw" target="_blank" rel="noopener noreferrer" class="news-link">查看原文 <span class="arrow">→</span></a>
+    </div>
+  </div>
 </section>
 
 <!-- Group Photos -->
@@ -507,12 +553,14 @@ const compImages=[
   '微信图片_20260708125415_940_33.jpg','微信图片_20260708125417_942_33.jpg',
   '微信图片_20260708125418_944_33.jpg','微信图片_20260708125422_948_33.jpg',
   '微信图片_20260708125425_950_33.jpg','微信图片_20260708125426_951_33.jpg',
-  '微信图片_20260708125433_959_33.jpg','微信图片_20260708125438_964_33.jpg'
+  '微信图片_20260708125433_959_33.jpg','微信图片_20260708125438_964_33.jpg',
+  '1.jpg','2.jpg','3.png','640.jpg','640 (1).jpg','640 (2).jpg'
 ];
 const groupImages=[
   '微信图片_20260708125416_941_33.jpg','微信图片_20260708125420_946_33.jpg',
   '微信图片_20260708125421_947_33.jpg','微信图片_20260708125427_952_33.jpg',
-  '微信图片_20260708125428_953_33.jpg','微信图片_20260708125440_966_33.jpg'
+  '微信图片_20260708125428_953_33.jpg','微信图片_20260708125440_966_33.jpg',
+  '640 (3).jpg','微信图片_20260702111634_125_350.jpg','微信图片_20260702111636_126_350.jpg'
 ];
 const awardImages=[
   '微信图片_20260708125417_943_33.jpg','微信图片_20260708125423_949_33.jpg',
