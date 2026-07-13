@@ -151,6 +151,22 @@ section.scroll-section{justify-content:flex-start;padding-top:calc(var(--nav-h) 
 .news-card .news-link:hover{border-bottom-color:var(--cyan);text-shadow:0 0 12px var(--cyan-glow)}
 .news-card .news-link .arrow{transition:transform .3s}
 .news-card .news-link:hover .arrow{transform:translateX(4px)}
+/* ========== Members ========== */
+.members-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+.member-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);overflow:hidden;transition:all .4s;backdrop-filter:blur(8px)}
+.member-card:hover{transform:translateY(-6px);border-color:var(--cyan-dim);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.member-photo{width:100%;aspect-ratio:3/4;overflow:hidden;position:relative;background:var(--bg2)}
+.member-photo img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.member-card:hover .member-photo img{transform:scale(1.05)}
+.member-info{padding:20px 20px 24px}
+.member-info .member-name{font-size:1.15rem;font-weight:800;color:#fff;margin-bottom:4px}
+.member-info .member-role{display:inline-block;font-size:.72rem;letter-spacing:2px;padding:2px 10px;border-radius:50px;margin-bottom:10px}
+.member-info .member-role.teacher-role{background:rgba(240,160,48,.18);color:#f0a030}
+.member-info .member-role.president-role{background:var(--cyan-dim);color:var(--cyan)}
+.member-info .member-role.vice-role{background:rgba(128,200,255,.18);color:#80c8ff}
+.member-info .member-role.star-role{background:var(--purple-dim);color:var(--purple)}
+.member-info .member-desc{color:var(--text-dim);font-size:.88rem;line-height:1.7}
+
 /* ========== Join Section ========== */
 .join-section{text-align:center}
 .qr-container{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;margin-top:40px}
@@ -200,6 +216,7 @@ footer .heart{color:var(--purple)}
   .facility-item{flex-wrap:wrap}
   .facility-item .icon{width:36px;height:36px;font-size:1.2rem}
   .facility-thumb{width:100%;height:180px;margin-top:8px;order:1}
+  .members-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
   nav .logo{font-size:1.1rem;letter-spacing:1px}
 }
 
@@ -225,6 +242,7 @@ footer .heart{color:var(--purple)}
     <li><a href="#competition" onclick="closeMenu()">比赛风采</a></li>
     <li><a href="#awards" onclick="closeMenu()">荣誉墙</a></li>
     <li><a href="#news" onclick="closeMenu()">喜报</a></li>
+    <li><a href="#members" onclick="closeMenu()">师生介绍</a></li>
     <li><a href="#group-photos" onclick="closeMenu()">社团合照</a></li>
     <li><a href="#join" onclick="closeMenu()">加入我们</a></li>
   </ul>
@@ -384,6 +402,47 @@ footer .heart{color:var(--purple)}
   </div>
 </section>
 
+<!-- Members -->
+<section id="members" class="scroll-section">
+  <div class="section-tag">// MEMBERS</div>
+  <h2 class="section-title">师生介绍</h2>
+  <p class="section-desc">优秀的师生是超科学社最宝贵的财富。</p>
+  <div class="members-grid">
+    <div class="member-card fade-up">
+      <div class="member-photo"><img src="materials/成员/指导老师冯金珏.JPG" alt="冯金珏" loading="lazy"></div>
+      <div class="member-info">
+        <div class="member-role teacher-role">指导老师</div>
+        <div class="member-name">冯金珏</div>
+        <p class="member-desc">超科学社指导老师，也是信息技术学科教师，多年来悉心指导社团发展，带领学生在各级科技竞赛中屡获佳绩，深受社员爱戴。</p>
+      </div>
+    </div>
+    <div class="member-card fade-up">
+      <div class="member-photo"><img src="materials/成员/社长江好悦.jpg" alt="江好悦" loading="lazy"></div>
+      <div class="member-info">
+        <div class="member-role president-role">社 长</div>
+        <div class="member-name">江好悦</div>
+        <p class="member-desc">统筹社团日常运作与赛事安排，曾于上海交通大学进修网页设计与智能小车技术，带领团队在各级小车竞赛中屡创佳绩。热爱智能小车技术，致力于为每位社员创造最好的成长环境。</p>
+      </div>
+    </div>
+    <div class="member-card fade-up">
+      <div class="member-photo"><img src="materials/成员/副社长杨轶超.jpg" alt="杨轶超" loading="lazy"></div>
+      <div class="member-info">
+        <div class="member-role vice-role">副社长</div>
+        <div class="member-name">杨轶超</div>
+        <p class="member-desc">协助社长统筹社团事务，积极推动社团各项活动开展，在团队协作与项目推进中表现突出。</p>
+      </div>
+    </div>
+    <div class="member-card fade-up">
+      <div class="member-photo"><img src="materials/成员/网站作者王睿捷.jpg" alt="王睿捷" loading="lazy"></div>
+      <div class="member-info">
+        <div class="member-role star-role">网站作者</div>
+        <div class="member-name">王睿捷</div>
+        <p class="member-desc">学习能力出众，在编程与网页设计方面表现突出，曾于上海交通大学进修网页设计与智能小车技术。积极参与多项赛事并取得一定成绩，同时也是本社团招新网站的开发者。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Group Photos -->
 <section id="group-photos" class="scroll-section">
   <div class="section-tag">// FAMILY</div>
@@ -399,14 +458,19 @@ footer .heart{color:var(--purple)}
   <p class="section-desc">新手无门槛！欢迎新高一、高二同学加入超科学社大家庭！</p>
   <div class="qr-container">
     <div class="qr-card fade-up">
-      <img src="materials/（副）社长微信/微信图片_20260708125429_955_33.jpg" alt="社长微信" loading="lazy">
-      <h4>社长微信</h4>
+      <img src="materials/微信/社长微信.jpg" alt="社长微信" loading="lazy">
+      <h4>社长江好悦微信</h4>
       <p>扫码添加 · 欢迎咨询</p>
     </div>
     <div class="qr-card fade-up">
-      <img src="materials/（副）社长微信/微信图片_20260708125945_967_33.jpg" alt="副社长微信" loading="lazy">
-      <h4>副社长微信</h4>
+      <img src="materials/微信/副社长微信.jpg" alt="副社长微信" loading="lazy">
+      <h4>副社长杨轶超微信</h4>
       <p>扫码添加 · 欢迎咨询</p>
+    </div>
+    <div class="qr-card fade-up">
+      <img src="materials/微信/我的微信.png" alt="网站作者微信" loading="lazy">
+      <h4>网站作者王睿捷微信</h4>
+      <p>欢迎来咨询任何问题(^q^)</p>
     </div>
   </div>
   <div class="join-text fade-up">
